@@ -1,0 +1,1136 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Алгоритм Подбора - Лучшие офферы казино</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎯</text></svg>">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-light: #6366f1;
+            --secondary: #10b981;
+            --accent: #f59e0b;
+        }
+        
+        body {
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            background-color: #f8fafc;
+            color: #1f2937;
+            -webkit-font-smoothing: antialiased;
+            padding-bottom: 80px; /* Отступ для футера */
+        }
+        
+        .offer-card {
+            background: white;
+            border-radius: 12px;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s ease;
+            height: 440px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .offer-card:hover {
+            border-color: var(--primary-light);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+            transform: translateY(-2px);
+        }
+        
+        .offer-card.best {
+            border: 2px solid var(--accent);
+        }
+        
+        .btn-primary {
+            background: var(--primary);
+            color: white;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+        }
+        
+        .filter-item {
+            transition: all 0.2s ease;
+            cursor: pointer;
+            border-radius: 10px;
+            border: 2px solid #e5e7eb;
+            background: white;
+        }
+        
+        .filter-item:hover {
+            border-color: var(--primary-light);
+        }
+        
+        .filter-item.active {
+            border-color: var(--primary);
+            background: #f5f3ff;
+        }
+        
+        .custom-checkbox {
+            width: 20px;
+            height: 20px;
+            border-radius: 6px;
+            border: 2px solid #e5e7eb;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+        
+        .custom-checkbox.checked {
+            background: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .custom-checkbox.checked::after {
+            content: '✓';
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+        
+        .rating-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            background: #f0f9ff;
+            color: var(--primary);
+        }
+        
+        .rating-badge .stars {
+            color: #fbbf24;
+            margin-right: 4px;
+        }
+        
+        .payout-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 6px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            background: #f0fdf4;
+            color: var(--secondary);
+        }
+        
+        .feature-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px;
+            background: #f8fafc;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #6b7280;
+        }
+        
+        .grid-layout {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            gap: 24px;
+        }
+        
+        @media (max-width: 1024px) {
+            .grid-layout {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        .carousel-item {
+            flex: 0 0 320px;
+            height: 440px;
+        }
+        
+        .offer-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 20px;
+        }
+        
+        .offer-grid .offer-card {
+            min-height: 440px;
+            max-height: 440px;
+        }
+        
+        .sticky-panel {
+            position: sticky;
+            top: 20px;
+            align-self: start;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.3s ease;
+        }
+        
+        .tooltip-simple {
+            border-left: 4px solid var(--primary);
+            background: #f5f3ff;
+        }
+        
+        /* Футер */
+        .fixed-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: white;
+            border-top: 1px solid #e5e7eb;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.05);
+            z-index: 50;
+            padding: 12px 0;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem;
+        }
+        
+        /* Кнопки A/B теста */
+        .ab-button {
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            border: none;
+            background: #f3f4f6;
+            color: #6b7280;
+        }
+        
+        .ab-button:hover {
+            background: #e5e7eb;
+        }
+        
+        .ab-button.active {
+            background: var(--primary);
+            color: white;
+        }
+        
+        /* Мобильная адаптация */
+        @media (max-width: 768px) {
+            .container {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+            
+            .grid-layout {
+                display: block;
+            }
+            
+            .sticky-panel {
+                position: static;
+                margin-bottom: 24px;
+            }
+            
+            .carousel-item {
+                flex: 0 0 280px;
+                height: auto;
+                min-height: 420px;
+            }
+            
+            .offer-grid {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+            
+            .offer-grid .offer-card,
+            .offer-card {
+                height: auto;
+                min-height: 400px;
+                max-height: none;
+            }
+            
+            .offer-card.best {
+                border-width: 2px;
+            }
+            
+            /* Заголовки */
+            header h1 {
+                font-size: 24px;
+                line-height: 1.3;
+            }
+            
+            header p {
+                font-size: 16px;
+                padding: 0 8px;
+            }
+            
+            /* Кнопка в хедере */
+            header button {
+                width: 100%;
+                justify-content: center;
+            }
+            
+            /* Фильтры на мобильных */
+            .filter-item {
+                padding: 12px;
+            }
+            
+            /* Секция с лучшими офферами */
+            .flex.overflow-x-auto {
+                padding-bottom: 8px;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            /* A/B кнопки */
+            #abButtonsContainer {
+                overflow-x: auto;
+                white-space: nowrap;
+                padding-bottom: 8px;
+                -webkit-overflow-scrolling: touch;
+            }
+            
+            #abButtonsContainer .ab-button {
+                flex-shrink: 0;
+            }
+            
+            /* Карточки в карусели */
+            .carousel-item .offer-card {
+                height: 100%;
+            }
+            
+            /* Футер на мобильных */
+            .fixed-footer {
+                padding: 12px 0;
+            }
+            
+            .footer-content {
+                padding: 0 16px;
+            }
+            
+            .footer-content > div {
+                flex-direction: column;
+                gap: 12px;
+                align-items: stretch;
+            }
+            
+            .footer-content .flex {
+                width: 100%;
+            }
+            
+            .footer-content button {
+                width: 100%;
+            }
+            
+            /* Улучшенные отступы */
+            .mb-10, .mb-8, .mb-6 {
+                margin-bottom: 20px !important;
+            }
+            
+            .py-8 {
+                padding-top: 24px;
+                padding-bottom: 24px;
+            }
+            
+            .px-4 {
+                padding-left: 16px;
+                padding-right: 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .carousel-item {
+                flex: 0 0 260px;
+            }
+            
+            .offer-grid .offer-card,
+            .offer-card {
+                min-height: 380px;
+            }
+            
+            .rating-badge,
+            .payout-badge {
+                font-size: 12px;
+                padding: 4px 8px;
+            }
+            
+            .feature-badge {
+                font-size: 11px;
+                padding: 3px 8px;
+            }
+            
+            .ab-button {
+                padding: 6px 12px;
+                font-size: 13px;
+            }
+            
+            /* Уменьшаем иконки на очень маленьких экранах */
+            .w-10, .h-10 {
+                width: 32px !important;
+                height: 32px !important;
+            }
+            
+            .w-12, .h-12 {
+                width: 40px !important;
+                height: 40px !important;
+            }
+            
+            /* Улучшаем отображение бонуса */
+            .bg-indigo-50 .text-lg {
+                font-size: 18px;
+            }
+            
+            /* Улучшаем кнопки в футере */
+            .fixed-footer .flex {
+                flex-direction: column;
+                gap: 8px;
+            }
+            
+            .fixed-footer button {
+                width: 100%;
+            }
+        }
+        
+        /* Оптимизация для планшетов */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .grid-layout {
+                grid-template-columns: 240px 1fr;
+            }
+            
+            .offer-grid {
+                grid-template-columns: repeat(2, minmax(300px, 1fr));
+            }
+            
+            .carousel-item {
+                flex: 0 0 300px;
+            }
+        }
+        
+        /* Улучшение скролла на мобильных */
+        @media (max-width: 768px) {
+            .overflow-x-auto {
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; /* Firefox */
+            }
+            
+            .overflow-x-auto::-webkit-scrollbar {
+                display: none; /* Chrome, Safari, Opera */
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container mx-auto px-4 py-8 max-w-7xl">
+        <!-- Header -->
+        <header class="text-center mb-10">
+            <div class="mb-6">
+                <span class="inline-block px-4 py-2 bg-indigo-100 text-indigo-700 rounded-full text-sm font-medium">
+                    <i class="fas fa-brain mr-2"></i>Умный алгоритм
+                </span>
+            </div>
+            
+            <h1 class="text-3xl font-bold text-gray-900 mb-4">
+                Подбор лучших офферов казино
+            </h1>
+            
+            <p class="text-gray-600 text-lg mb-8 max-w-2xl mx-auto">
+                Анализируем сотни вариантов — показываем только рабочие офферы
+            </p>
+            
+            <button onclick="scrollToFilters()" 
+                    class="btn-primary py-3 px-8 rounded-xl font-medium inline-flex items-center">
+                <i class="fas fa-play mr-3"></i>
+                Начать подбор
+            </button>
+        </header>
+
+        <!-- Основной контент -->
+        <div class="grid-layout">
+            <!-- Боковая панель -->
+            <aside class="sticky-panel">
+                <div class="bg-white rounded-xl shadow-sm p-5 mb-5">
+                    <div class="flex items-center justify-between mb-5">
+                        <h2 class="font-bold text-lg">
+                            <i class="fas fa-filter text-indigo-500 mr-2"></i>
+                            Фильтры
+                        </h2>
+                        <button onclick="resetFilters()" 
+                                class="text-sm text-gray-500 hover:text-indigo-600">
+                            Сбросить
+                        </button>
+                    </div>
+                    
+                    <div class="mb-5 tooltip-simple p-4 rounded-lg">
+                        <p class="text-sm text-gray-700">
+                            <i class="fas fa-info-circle text-indigo-500 mr-2"></i>
+                            Выберите 1-2 фильтра для точного подбора
+                        </p>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <div class="filter-item p-3" onclick="toggleFilter('fastWithdrawal')" data-filter="fastWithdrawal">
+                            <div class="flex items-center">
+                                <div class="custom-checkbox mr-3"></div>
+                                <div class="flex-1">
+                                    <div class="font-medium">Быстрый вывод</div>
+                                    <div class="text-sm text-gray-500">До 1 часа</div>
+                                </div>
+                                <i class="fas fa-bolt text-gray-400"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-item p-3" onclick="toggleFilter('noVerification')" data-filter="noVerification">
+                            <div class="flex items-center">
+                                <div class="custom-checkbox mr-3"></div>
+                                <div class="flex-1">
+                                    <div class="font-medium">Без верификации</div>
+                                    <div class="text-sm text-gray-500">Документы не нужны</div>
+                                </div>
+                                <i class="fas fa-user-check text-gray-400"></i>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-item p-3" onclick="toggleFilter('topProviders')" data-filter="topProviders">
+                            <div class="flex items-center">
+                                <div class="custom-checkbox mr-3"></div>
+                                <div class="flex-1">
+                                    <div class="font-medium">Топ-провайдеры</div>
+                                    <div class="text-sm text-gray-500">NetEnt, Microgaming</div>
+                                </div>
+                                <i class="fas fa-crown text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-6 pt-5 border-t border-gray-100">
+                        <div class="flex justify-between mb-2">
+                            <span class="text-gray-700">Активные фильтры:</span>
+                            <span id="activeFiltersCount" class="bg-indigo-100 text-indigo-700 text-sm px-2 py-1 rounded">0</span>
+                        </div>
+                        <div id="activeFiltersList" class="text-sm text-gray-500">
+                            Не выбрано
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Статистика -->
+                <div class="bg-white rounded-xl shadow-sm p-5">
+                    <h3 class="font-bold text-gray-900 mb-4">
+                        <i class="fas fa-chart-bar text-indigo-500 mr-2"></i>
+                        Статистика
+                    </h3>
+                    <div class="space-y-4">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Офферов в базе</span>
+                                <span id="totalOffers" class="font-medium">6</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Средний рейтинг</span>
+                                <span class="font-medium text-indigo-600">4.7</span>
+                            </div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-sm mb-1">
+                                <span class="text-gray-600">Средняя выплата</span>
+                                <span class="font-medium text-green-600">97%</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+            <!-- Основной контент -->
+            <main>
+                <!-- A/B тест переключатель -->
+                <div class="bg-white rounded-xl shadow-sm p-4 mb-6">
+                    <div class="flex flex-wrap gap-2" id="abButtonsContainer">
+                        <button onclick="setABVariant('recommended')" 
+                                class="ab-button active">
+                            <i class="fas fa-star mr-2"></i>Рекомендуем
+                        </button>
+                        <button onclick="setABVariant('payout')" 
+                                class="ab-button">
+                            <i class="fas fa-chart-line mr-2"></i>Топ выплаты
+                        </button>
+                    </div>
+                </div>
+
+                <!-- A/B блок -->
+                <div id="abBlock" class="mb-8 fade-in">
+                    <!-- Контент будет загружен динамически -->
+                </div>
+
+                <!-- Лучшие офферы -->
+                <div class="mb-10">
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">
+                                <i class="fas fa-medal text-amber-500 mr-2"></i>
+                                Лучшие по запросу
+                            </h2>
+                            <p class="text-gray-600 text-sm">Топ-3 предложения</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-500">Показано</div>
+                            <div id="topOffersCount" class="text-lg font-bold text-indigo-600">3</div>
+                        </div>
+                    </div>
+                    
+                    <div class="flex overflow-x-auto pb-4 gap-4 px-1">
+                        <div id="topOffersCarousel" class="flex gap-4">
+                            <!-- Карточки будут загружены динамически -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Все офферы -->
+                <div>
+                    <div class="flex justify-between items-center mb-6">
+                        <div>
+                            <h2 class="text-xl font-bold text-gray-900">
+                                <i class="fas fa-th-large text-indigo-500 mr-2"></i>
+                                Все офферы
+                            </h2>
+                            <p class="text-gray-600 text-sm">Полный список</p>
+                        </div>
+                        <div class="text-right">
+                            <div class="text-sm text-gray-500">Найдено</div>
+                            <div id="allOffersCount" class="text-lg font-bold text-indigo-600">6</div>
+                        </div>
+                    </div>
+                    
+                    <div id="allOffersGrid" class="offer-grid">
+                        <!-- Карточки будут загружены динамически -->
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Футер (исправленный) -->
+    <div class="fixed-footer">
+        <div class="footer-content">
+            <div class="flex items-center justify-between">
+                <div>
+                    <div class="font-medium text-gray-900">
+                        Найдено <span id="filteredOffersCount" class="text-indigo-600 font-bold">6</span> офферов
+                    </div>
+                    <div id="filterStatus" class="text-sm text-gray-500">Готово к работе</div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="scrollToTop()" 
+                            class="px-4 py-2 border border-gray-300 rounded-lg text-gray-700 hover:bg-gray-50 text-sm">
+                        <i class="fas fa-arrow-up mr-2"></i>Наверх
+                    </button>
+                    <button onclick="refreshOffers()" 
+                            class="btn-primary px-4 py-2 rounded-lg text-sm font-medium">
+                        <i class="fas fa-sync-alt mr-2"></i>Обновить
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Mock данные
+        const mockOffers = [
+            { 
+                id: 1, 
+                name: 'Casino Grand', 
+                bonus: '100% + 200 FS', 
+                withdrawal: '15 минут', 
+                verification: false, 
+                providers: ['NetEnt', 'Microgaming'], 
+                rating: 4.9, 
+                payout: 98.2, 
+                updated: 5,
+                license: 'Curacao',
+                features: ['Приложение', '24/7', 'Кешбэк']
+            },
+            { 
+                id: 2, 
+                name: 'Lucky Spin', 
+                bonus: '150% + 50 FS', 
+                withdrawal: 'Мгновенно', 
+                verification: true, 
+                providers: ['Play\'n GO'], 
+                rating: 4.7, 
+                payout: 97.5, 
+                updated: 15,
+                license: 'Мальта',
+                features: ['Турниры', 'VIP', 'Живые игры']
+            },
+            { 
+                id: 3, 
+                name: 'Royal Vegas', 
+                bonus: '200% + 100 FS', 
+                withdrawal: '1 час', 
+                verification: false, 
+                providers: ['NetEnt', 'Evolution'], 
+                rating: 4.8, 
+                payout: 96.8, 
+                updated: 8,
+                license: 'UK',
+                features: ['Джекпоты', 'Спорт']
+            },
+            { 
+                id: 4, 
+                name: 'Mega Fortune', 
+                bonus: '120% + 75 FS', 
+                withdrawal: '24 часа', 
+                verification: true, 
+                providers: ['Microgaming'], 
+                rating: 4.6, 
+                payout: 95.9, 
+                updated: 25,
+                license: 'Curacao',
+                features: ['Быстрые выплаты']
+            },
+            { 
+                id: 5, 
+                name: 'Jackpot City', 
+                bonus: '300% + 150 FS', 
+                withdrawal: '30 минут', 
+                verification: false, 
+                providers: ['NetEnt', 'Microgaming', 'Play\'n GO'], 
+                rating: 4.9, 
+                payout: 97.8, 
+                updated: 3,
+                license: 'Мальта',
+                features: ['Джекпоты', 'Бонусы']
+            },
+            { 
+                id: 6, 
+                name: 'Spin Palace', 
+                bonus: '100% + 50 FS', 
+                withdrawal: 'Мгновенно', 
+                verification: false, 
+                providers: ['Play\'n GO'], 
+                rating: 4.5, 
+                payout: 96.4, 
+                updated: 40,
+                license: 'Curacao',
+                features: ['Низкий депозит']
+            }
+        ];
+        
+        // Состояние приложения
+        const AppState = {
+            offers: [...mockOffers],
+            filteredOffers: [...mockOffers],
+            filters: {
+                fastWithdrawal: false,
+                noVerification: false,
+                topProviders: false
+            },
+            abVariant: 'recommended'
+        };
+        
+        // Инициализация
+        document.addEventListener('DOMContentLoaded', function() {
+            initFilters();
+            initABTesting();
+            updateUI();
+            updateStats();
+        });
+        
+        // Фильтрация
+        function filterOffers(offers, filters) {
+            let result = [...offers];
+            
+            if (filters.fastWithdrawal) {
+                result = result.filter(offer => 
+                    offer.withdrawal === '15 минут' || 
+                    offer.withdrawal === 'Мгновенно' || 
+                    offer.withdrawal === '30 минут' ||
+                    offer.withdrawal === '1 час'
+                );
+            }
+            
+            if (filters.noVerification) {
+                result = result.filter(offer => !offer.verification);
+            }
+            
+            if (filters.topProviders) {
+                result = result.filter(offer => 
+                    offer.providers.includes('NetEnt') || 
+                    offer.providers.includes('Microgaming')
+                );
+            }
+            
+            return result;
+        }
+        
+        // Создание карточки
+        function createOfferCard(offer, isBest = false) {
+            const stars = Array(5).fill().map((_, i) => 
+                i < Math.floor(offer.rating) ? 'fas fa-star' : 'far fa-star'
+            ).slice(0, 5);
+            
+            return `
+                <div class="offer-card p-4 ${isBest ? 'best' : ''} fade-in">
+                    <!-- Заголовок -->
+                    <div class="mb-4">
+                        <div class="flex items-center mb-3">
+                            <div class="w-10 h-10 rounded-lg bg-indigo-100 flex items-center justify-center mr-3">
+                                <i class="fas fa-dice text-indigo-600"></i>
+                            </div>
+                            <div class="flex-1">
+                                <h3 class="font-bold text-gray-900">${offer.name}</h3>
+                                <div class="text-xs text-gray-500">${offer.license}</div>
+                            </div>
+                            ${isBest ? `
+                                <div class="bg-amber-100 text-amber-800 text-xs px-2 py-1 rounded">
+                                    Топ
+                                </div>
+                            ` : ''}
+                        </div>
+                        
+                        <!-- Бонус -->
+                        <div class="bg-indigo-50 border border-indigo-100 rounded-lg p-3 mb-4">
+                            <div class="font-bold text-lg text-indigo-700">${offer.bonus}</div>
+                            <div class="text-xs text-indigo-500">Приветственный бонус</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Рейтинг и выплаты -->
+                    <div class="flex gap-2 mb-4">
+                        <div class="rating-badge">
+                            <span class="stars">
+                                ${stars.map(star => `<i class="${star} text-xs"></i>`).join('')}
+                            </span>
+                            ${offer.rating.toFixed(1)}
+                        </div>
+                        <div class="payout-badge">
+                            <i class="fas fa-percentage mr-1 text-xs"></i>
+                            ${offer.payout}%
+                        </div>
+                    </div>
+                    
+                    <!-- Особенности -->
+                    <div class="mb-4">
+                        <div class="text-xs text-gray-500 mb-2">Особенности:</div>
+                        <div class="flex flex-wrap gap-1.5">
+                            ${offer.features.slice(0, 2).map(feature => `
+                                <div class="feature-badge">
+                                    ${feature}
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    
+                    <!-- Информация -->
+                    <div class="space-y-2 mb-5 flex-1">
+                        <div class="flex items-center text-sm">
+                            <i class="fas fa-clock text-gray-400 mr-2 w-4"></i>
+                            <span class="text-gray-600">Вывод:</span>
+                            <span class="ml-1 font-medium">${offer.withdrawal}</span>
+                        </div>
+                        <div class="flex items-center text-sm">
+                            <i class="fas ${offer.verification ? 'fa-id-card text-amber-500' : 'fa-user-check text-green-500'} mr-2 w-4"></i>
+                            <span class="text-gray-600">Документы:</span>
+                            <span class="ml-1 font-medium ${offer.verification ? 'text-amber-600' : 'text-green-600'}">
+                                ${offer.verification ? 'нужны' : 'не нужны'}
+                            </span>
+                        </div>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="fas fa-sync-alt mr-2 w-4"></i>
+                            Обновлено ${offer.updated} мин назад
+                        </div>
+                    </div>
+                    
+                    <!-- Кнопка -->
+                    <a href="https://example.com/offer/${offer.id}" 
+                       target="_blank"
+                       onclick="trackOfferClick(${offer.id}, '${offer.name}')"
+                       class="btn-primary w-full py-3 rounded-lg font-medium flex items-center justify-center mt-auto">
+                        <span>Открыть казино</span>
+                        <i class="fas fa-external-link-alt ml-2 text-sm"></i>
+                    </a>
+                </div>
+            `;
+        }
+        
+        // A/B блок
+        function createABBlock(variant, topOffer) {
+            if (!topOffer) return '<div class="text-center py-8 text-gray-500">Нет офферов по выбранным фильтрам</div>';
+            
+            if (variant === 'recommended') {
+                return `
+                    <div class="bg-white rounded-xl border border-gray-200 p-5 mb-6">
+                        <div class="flex items-center mb-4">
+                            <div class="w-12 h-12 rounded-lg bg-indigo-100 flex items-center justify-center mr-4">
+                                <i class="fas fa-star text-indigo-600"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-bold text-lg">Рекомендуем этот оффер</h3>
+                                <p class="text-gray-600 text-sm">На основе ваших фильтров</p>
+                            </div>
+                        </div>
+                        <div class="bg-gray-50 rounded-lg p-4">
+                            <div class="flex flex-col md:flex-row md:items-center justify-between">
+                                <div class="mb-3 md:mb-0">
+                                    <div class="font-bold text-lg">${topOffer.name}</div>
+                                    <div class="text-indigo-600 font-medium">${topOffer.bonus}</div>
+                                    <div class="text-sm text-gray-600 mt-1">
+                                        Рейтинг: ${topOffer.rating.toFixed(1)} • Выплата: ${topOffer.payout}%
+                                    </div>
+                                </div>
+                                <a href="https://example.com/offer/${topOffer.id}" 
+                                   target="_blank"
+                                   onclick="trackOfferClick(${topOffer.id}, '${topOffer.name}')"
+                                   class="btn-primary px-5 py-2 rounded-lg inline-block text-center">
+                                    Открыть
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            // payout вариант
+            return `
+                <div class="bg-white rounded-xl border border-gray-200 p-5 mb-6">
+                    <div class="flex items-center mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-green-100 flex items-center justify-center mr-4">
+                            <i class="fas fa-chart-line text-green-600"></i>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-lg">Топ по выплатам</h3>
+                            <p class="text-gray-600 text-sm">Высокий процент выплат</p>
+                        </div>
+                    </div>
+                    <div class="bg-gray-50 rounded-lg p-4">
+                        <div class="flex flex-col md:flex-row md:items-center justify-between">
+                            <div class="mb-3 md:mb-0">
+                                <div class="font-bold text-lg">${topOffer.name}</div>
+                                <div class="text-green-600 font-bold text-lg">${topOffer.payout}% выплата</div>
+                                <div class="text-sm text-gray-600 mt-1">
+                                    Вывод: ${topOffer.withdrawal} • Бонус: ${topOffer.bonus}
+                                </div>
+                            </div>
+                            <a href="https://example.com/offer/${topOffer.id}" 
+                               target="_blank"
+                               onclick="trackOfferClick(${topOffer.id}, '${topOffer.name}')"
+                               class="btn-primary px-5 py-2 rounded-lg inline-block text-center">
+                                Открыть
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+        
+        // Трекинг кликов
+        function trackOfferClick(id, name) {
+            console.log('Offer clicked:', { id, name });
+        }
+        
+        // Инициализация фильтров
+        function initFilters() {
+            document.querySelectorAll('.filter-item').forEach(btn => {
+                const filterName = btn.dataset.filter;
+                const checkbox = btn.querySelector('.custom-checkbox');
+                
+                if (AppState.filters[filterName]) {
+                    btn.classList.add('active');
+                    checkbox.classList.add('checked');
+                }
+            });
+        }
+        
+        // Переключение фильтра
+        function toggleFilter(filterName) {
+            AppState.filters[filterName] = !AppState.filters[filterName];
+            
+            const btn = document.querySelector(`[data-filter="${filterName}"]`);
+            const checkbox = btn.querySelector('.custom-checkbox');
+            
+            if (AppState.filters[filterName]) {
+                btn.classList.add('active');
+                checkbox.classList.add('checked');
+            } else {
+                btn.classList.remove('active');
+                checkbox.classList.remove('checked');
+            }
+            
+            applyFilters();
+        }
+        
+        // Применение фильтров
+        function applyFilters() {
+            AppState.filteredOffers = filterOffers(AppState.offers, AppState.filters);
+            updateUI();
+            updateFilterStats();
+            updateStats();
+        }
+        
+        // Сброс фильтров
+        function resetFilters() {
+            AppState.filters = {
+                fastWithdrawal: false,
+                noVerification: false,
+                topProviders: false
+            };
+            
+            document.querySelectorAll('.filter-item').forEach(btn => {
+                btn.classList.remove('active');
+                btn.querySelector('.custom-checkbox').classList.remove('checked');
+            });
+            
+            applyFilters();
+        }
+        
+        // Обновление статистики фильтров
+        function updateFilterStats() {
+            const activeFilters = Object.values(AppState.filters).filter(Boolean).length;
+            document.getElementById('activeFiltersCount').textContent = activeFilters;
+            
+            const activeFilterNames = [];
+            if (AppState.filters.fastWithdrawal) activeFilterNames.push('Быстрый вывод');
+            if (AppState.filters.noVerification) activeFilterNames.push('Без верификации');
+            if (AppState.filters.topProviders) activeFilterNames.push('Топ-провайдеры');
+            
+            document.getElementById('activeFiltersList').textContent = 
+                activeFilterNames.length > 0 ? activeFilterNames.join(', ') : 'Не выбрано';
+                
+            document.getElementById('filterStatus').textContent = 
+                activeFilters > 0 ? `Применено ${activeFilters} фильтра` : 'Готово к работе';
+        }
+        
+        // Обновление общей статистики
+        function updateStats() {
+            document.getElementById('totalOffers').textContent = AppState.offers.length;
+            
+            const avgRating = (AppState.offers.reduce((sum, o) => sum + o.rating, 0) / AppState.offers.length).toFixed(1);
+            const avgPayout = (AppState.offers.reduce((sum, o) => sum + o.payout, 0) / AppState.offers.length).toFixed(0);
+            
+            document.querySelectorAll('.font-medium.text-indigo-600')[0].textContent = avgRating;
+            document.querySelectorAll('.font-medium.text-green-600')[0].textContent = avgPayout + '%';
+        }
+        
+        // Инициализация A/B тестирования
+        function initABTesting() {
+            setABVariant(AppState.abVariant);
+        }
+        
+        // Установка A/B варианта
+        function setABVariant(variant) {
+            AppState.abVariant = variant;
+            
+            // Обновляем все кнопки A/B
+            const buttons = document.querySelectorAll('#abButtonsContainer .ab-button');
+            buttons.forEach(btn => {
+                const isRecommended = btn.textContent.includes('Рекомендуем');
+                const isPayout = btn.textContent.includes('Топ выплаты');
+                
+                if ((variant === 'recommended' && isRecommended) ||
+                    (variant === 'payout' && isPayout)) {
+                    btn.classList.add('active');
+                    btn.classList.remove('text-gray-700');
+                } else {
+                    btn.classList.remove('active');
+                    btn.classList.add('text-gray-700');
+                }
+            });
+            
+            updateUI();
+        }
+        
+        // Обновление UI
+        function updateUI() {
+            // A/B блок
+            const topOffer = AppState.filteredOffers[0];
+            document.getElementById('abBlock').innerHTML = createABBlock(AppState.abVariant, topOffer);
+            
+            // Карусель лучших офферов
+            const topOffers = AppState.filteredOffers.slice(0, 3);
+            document.getElementById('topOffersCarousel').innerHTML = 
+                topOffers.map(offer => `
+                    <div class="carousel-item">
+                        ${createOfferCard(offer, true)}
+                    </div>
+                `).join('');
+            document.getElementById('topOffersCount').textContent = topOffers.length;
+            
+            // Все офферы
+            document.getElementById('allOffersGrid').innerHTML = 
+                AppState.filteredOffers.map(offer => createOfferCard(offer)).join('');
+            document.getElementById('allOffersCount').textContent = AppState.filteredOffers.length;
+            
+            // Футер
+            document.getElementById('filteredOffersCount').textContent = AppState.filteredOffers.length;
+        }
+        
+        // Прокрутка к фильтрам
+        function scrollToFilters() {
+            const isMobile = window.innerWidth <= 768;
+            const targetElement = isMobile ? document.querySelector('.sticky-panel') : document.querySelector('aside');
+            
+            targetElement.scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+        
+        // Прокрутка наверх
+        function scrollToTop() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        
+        // Обновить офферы
+        function refreshOffers() {
+            const btn = event?.target.closest('button');
+            if (btn) {
+                const originalHtml = btn.innerHTML;
+                btn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i>Обновление...';
+                btn.disabled = true;
+                
+                // Имитация загрузки
+                setTimeout(() => {
+                    // "Обновляем" данные
+                    AppState.offers = [...mockOffers];
+                    AppState.filteredOffers = [...mockOffers];
+                    
+                    // Обновляем UI
+                    updateUI();
+                    updateStats();
+                    
+                    // Возвращаем кнопку в исходное состояние
+                    btn.innerHTML = originalHtml;
+                    btn.disabled = false;
+                    
+                    // Показываем сообщение
+                    const filterStatus = document.getElementById('filterStatus');
+                    const originalText = filterStatus.textContent;
+                    filterStatus.textContent = 'Данные обновлены';
+                    filterStatus.className = 'text-sm text-green-600';
+                    
+                    setTimeout(() => {
+                        filterStatus.textContent = originalText;
+                        filterStatus.className = 'text-sm text-gray-500';
+                    }, 2000);
+                    
+                }, 800);
+            }
+        }
+        
+        // Добавляем обработчик изменения размера окна
+        window.addEventListener('resize', function() {
+            // Пересчитываем адаптацию при изменении размера окна
+            if (window.innerWidth <= 768) {
+                document.querySelector('.sticky-panel').style.position = 'static';
+            } else {
+                document.querySelector('.sticky-panel').style.position = 'sticky';
+            }
+        });
+    </script>
+</body>
+</html>
