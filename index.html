@@ -1105,7 +1105,7 @@
                         </div>
                         <div class="flex items-center bg-gradient-to-r from-purple-900/30 to-cyan-900/30 rounded-xl px-5 py-4 border border-white/10 w-full md:w-auto ai-pulse">
                             <div class="w-3 h-3 rounded-full bg-emerald-400 animate-pulse mr-3"></div>
-                            <span class="font-bold text-white text-xl" id="matched-offers-count">6 офферов</span>
+                            <span class="font-bold text-white text-xl" id="matched-offers-count">7 офферов</span>
                             <span class="text-gray-400 text-sm ml-2">AI рекомендует</span>
                         </div>
                     </div>
@@ -1187,103 +1187,133 @@
             isInitialized: false
         };
         
-        // Данные офферов
+        // РЕАЛЬНЫЕ ДАННЫЕ ОФФЕРОВ с проанализированных сайтов
         const offersData = [
             {
                 id: 1,
-                name: "Quantum Casino",
+                name: "Beef Casino",
                 bonus: "200% + 100 фриспинов",
                 type: "deposit",
-                rating: 4.9,
+                rating: 4.8,
                 popularity: "AI Топ-1",
                 tag: "Эксклюзив",
                 match: 98,
-                color: "from-cyan-500 to-purple-500",
-                icon: "atom",
-                minDeposit: "500₽",
-                withdrawalTime: "15 мин",
+                color: "from-red-500 to-orange-500",
+                icon: "fire",
+                minDeposit: "100₽",
+                withdrawalTime: "5-15 мин",
                 risk: "Низкий",
-                aiScore: 9.8
+                aiScore: 9.7,
+                verification: "Есть",
+                partnerLink: "https://bttrc.ru/go/spbjptxpva"
             },
             {
                 id: 2,
-                name: "NeoWin",
-                bonus: "150% к депозиту",
+                name: "MelBet",
+                bonus: "130% + 30 фриспинов",
                 type: "deposit",
-                rating: 4.7,
+                rating: 4.9,
                 popularity: "AI Выбор",
                 tag: "Быстрый вывод",
-                match: 95,
-                color: "from-blue-500 to-cyan-500",
-                icon: "bolt",
-                minDeposit: "1000₽",
-                withdrawalTime: "10 мин",
+                match: 96,
+                color: "from-emerald-500 to-green-500",
+                icon: "trophy",
+                minDeposit: "100₽",
+                withdrawalTime: "10-20 мин",
                 risk: "Низкий",
-                aiScore: 9.5
+                aiScore: 9.5,
+                verification: "Есть",
+                partnerLink: "https://bttrc.ru/go/s3g8x82qqi"
             },
             {
                 id: 3,
-                name: "Cyber Spin",
-                bonus: "300 фриспинов",
-                type: "freespins",
-                rating: 4.5,
+                name: "RT Casino",
+                bonus: "150% к депозиту",
+                type: "deposit",
+                rating: 4.6,
                 popularity: "AI Рекомендует",
-                tag: "Без депозита",
+                tag: "Без вейджера",
                 match: 92,
-                color: "from-emerald-500 to-green-500",
-                icon: "dice",
-                minDeposit: "0₽",
-                withdrawalTime: "30 мин",
+                color: "from-blue-500 to-cyan-500",
+                icon: "bolt",
+                minDeposit: "500₽",
+                withdrawalTime: "15-30 мин",
                 risk: "Низкий",
-                aiScore: 9.2
+                aiScore: 9.2,
+                verification: "Есть",
+                partnerLink: "https://bttrc.ru/go/slxlrrhbfk"
             },
             {
                 id: 4,
-                name: "Nova Star",
+                name: "Jet Casino",
                 bonus: "100% + 50 фриспинов",
                 type: "deposit",
-                rating: 4.8,
+                rating: 4.7,
                 popularity: "AI Проверено",
-                tag: "Безопасный",
+                tag: "Скоростной",
                 match: 90,
-                color: "from-amber-500 to-orange-500",
-                icon: "star",
-                minDeposit: "500₽",
-                withdrawalTime: "1 час",
+                color: "from-purple-500 to-pink-500",
+                icon: "rocket",
+                minDeposit: "200₽",
+                withdrawalTime: "5-10 мин",
                 risk: "Низкий",
-                aiScore: 9.0
+                aiScore: 9.0,
+                verification: "Есть",
+                partnerLink: "https://bttrc.ru/go/s52s5n5qym"
             },
             {
                 id: 5,
-                name: "AI VIP Club",
+                name: "Flagman Casino",
                 bonus: "250% + 70 фриспинов",
                 type: "deposit",
-                rating: 4.6,
+                rating: 4.5,
                 popularity: "AI Эксклюзив",
-                tag: "Премиум",
+                tag: "Максимальный",
                 match: 88,
-                color: "from-pink-500 to-rose-500",
+                color: "from-amber-500 to-yellow-500",
                 icon: "crown",
-                minDeposit: "2000₽",
-                withdrawalTime: "2 часа",
+                minDeposit: "300₽",
+                withdrawalTime: "10-25 мин",
                 risk: "Средний",
-                aiScore: 8.8
+                aiScore: 8.8,
+                verification: "Есть",
+                partnerLink: "https://bttrc.ru/go/s8po2l4f8z"
             },
             {
                 id: 6,
-                name: "SmartBonus",
+                name: "Lev Casino",
                 bonus: "120% к депозиту",
                 type: "deposit",
-                rating: 4.3,
+                rating: 4.4,
                 popularity: "AI Найдено",
-                tag: "Умный выбор",
-                match: 85,
+                tag: "Льготный",
+                match: 86,
                 color: "from-indigo-500 to-blue-500",
-                icon: "brain",
-                minDeposit: "300₽",
-                withdrawalTime: "45 мин",
+                icon: "lion",
+                minDeposit: "100₽",
+                withdrawalTime: "15-40 мин",
                 risk: "Низкий",
-                aiScore: 8.5
+                aiScore: 8.6,
+                verification: "Есть",
+                partnerLink: "https://bttrc.ru/go/se0v5pfjcq"
+            },
+            {
+                id: 7,
+                name: "7K Casino",
+                bonus: "100 фриспинов",
+                type: "freespins",
+                rating: 4.3,
+                popularity: "AI Спецпредложение",
+                tag: "Без депозита",
+                match: 84,
+                color: "from-rose-500 to-pink-500",
+                icon: "dice",
+                minDeposit: "0₽",
+                withdrawalTime: "30-60 мин",
+                risk: "Низкий",
+                aiScore: 8.4,
+                verification: "Есть",
+                partnerLink: "https://bttrc.ru/go/sxy9ja32wo"
             }
         ];
         
@@ -1822,7 +1852,7 @@
             
             // Анимация статистики
             const totalOffers = 1247;
-            const matchedOffers = 6;
+            const matchedOffers = 7; // Обновлено на 7 офферов
             let scanned = 0;
             let filtered = 0;
             let aiScore = 0;
@@ -1998,8 +2028,8 @@
                 else if (state.bonusSize === 'over200') baseCount -= 5;
             }
             
-            // Минимум 3 оффера
-            const count = Math.max(3, Math.round(baseCount));
+            // Минимум 7 офферов (теперь у нас 7 реальных офферов)
+            const count = Math.max(7, Math.round(baseCount));
             
             // Обновление счетчиков
             const mobileCount = document.getElementById('offers-count-mobile');
@@ -2008,7 +2038,7 @@
             }
         }
         
-        // Генерация результатов
+        // Генерация результатов с РЕАЛЬНЫМИ данными
         function generateResults() {
             // Очистка контейнера
             const container = document.getElementById('offers-container');
@@ -2017,7 +2047,7 @@
             // Обновление текста выбранных фильтров
             updateSelectedFiltersText();
             
-            // Генерация карточек офферов
+            // Генерация карточек реальных офферов
             offersData.forEach((offer, index) => {
                 const card = document.createElement('div');
                 card.className = 'glass-card glass-card-hover rounded-xl overflow-hidden fade-in';
@@ -2050,7 +2080,7 @@
                             <div class="text-xl font-bold text-white">${offer.bonus}</div>
                         </div>
                         
-                        <div class="grid grid-cols-2 gap-3 mb-6">
+                        <div class="grid grid-cols-3 gap-3 mb-6">
                             <div class="bg-white/5 rounded-lg p-3 text-center">
                                 <div class="text-gray-400 text-xs mb-1">Мин. депозит</div>
                                 <div class="font-bold text-white text-base">${offer.minDeposit}</div>
@@ -2058,6 +2088,10 @@
                             <div class="bg-white/5 rounded-lg p-3 text-center">
                                 <div class="text-gray-400 text-xs mb-1">Вывод</div>
                                 <div class="font-bold text-white text-base">${offer.withdrawalTime}</div>
+                            </div>
+                            <div class="bg-white/5 rounded-lg p-3 text-center">
+                                <div class="text-gray-400 text-xs mb-1">Верификация</div>
+                                <div class="font-bold text-green-400 text-base">${offer.verification}</div>
                             </div>
                         </div>
                         
@@ -2067,6 +2101,9 @@
                             </span>
                             <span class="px-3 py-1 bg-cyan-900/30 text-cyan-400 rounded text-xs font-semibold">
                                 <i class="fas fa-robot mr-1"></i>${offer.popularity}
+                            </span>
+                            <span class="px-3 py-1 bg-emerald-900/30 text-emerald-400 rounded text-xs font-semibold">
+                                AI Score: ${offer.aiScore}/10
                             </span>
                         </div>
                         
@@ -2080,7 +2117,7 @@
                 container.appendChild(card);
             });
             
-            // Добавление обработчиков для кнопок "Забрать сейчас"
+            // Добавление обработчиков для кнопок "Забрать AI-оффер"
             document.querySelectorAll('.offer-cta').forEach(btn => {
                 btn.addEventListener('click', function() {
                     const offerId = this.getAttribute('data-offer-id');
@@ -2161,8 +2198,8 @@
             // Скрыть кнопку "Продолжить" на странице результатов
             document.getElementById('next-btn').classList.add('hidden');
             
-            // Обновление счетчика
-            document.getElementById('matched-offers-count').textContent = '6 офферов';
+            // Обновление счетчика на 7 офферов
+            document.getElementById('matched-offers-count').textContent = '7 офферов';
             
             // Показать кнопку "Назад"
             document.getElementById('back-btn').classList.remove('hidden');
@@ -2173,73 +2210,12 @@
             }
         }
         
-        // Обработка клика по офферу
+        // Обработка клика по офферу - ПЕРЕХОД ПО ПАРТНЕРСКОЙ ССЫЛКЕ
         function handleOfferClick(offerId) {
             const offer = offersData.find(o => o.id == offerId);
             
-            // На мобильных просто показываем алерт
-            if (window.innerWidth < 768) {
-                alert(`Переход к офферу: ${offer.name}\n\nБонус: ${offer.bonus}\n\nВ реальном приложении здесь будет редирект на партнерскую ссылку.`);
-                return;
-            }
-            
-            // На десктопе показываем модальное окно
-            const modal = document.createElement('div');
-            modal.className = 'fixed inset-0 bg-black/70 flex items-center justify-center z-50 p-4 backdrop-blur-sm';
-            modal.innerHTML = `
-                <div class="bg-gradient-to-br from-gray-900 to-gray-950 rounded-2xl max-w-md w-full p-6 border border-white/10">
-                    <div class="text-center mb-4">
-                        <div class="w-16 h-16 rounded-full bg-gradient-to-r from-cyan-500 to-purple-500 flex items-center justify-center mx-auto mb-3 relative overflow-hidden">
-                            <i class="fas fa-check text-white text-2xl"></i>
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent ai-shimmer"></div>
-                        </div>
-                        <h3 class="text-xl font-bold text-white mb-2 ai-glow-text">AI Подтверждает!</h3>
-                        <p class="text-gray-400 text-sm">Вы выбрали оптимальный AI-оффер</p>
-                    </div>
-                    
-                    <div class="space-y-3 mb-6">
-                        <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                            <span class="text-gray-300 text-sm">AI Рейтинг</span>
-                            <span class="font-bold text-white">${offer.rating}/5</span>
-                        </div>
-                        <div class="flex justify-between items-center p-3 bg-white/5 rounded-xl">
-                            <span class="text-gray-300 text-sm">AI Score</span>
-                            <span class="font-bold text-white">${offer.aiScore}/10</span>
-                        </div>
-                    </div>
-                    
-                    <div class="flex space-x-3">
-                        <button class="flex-1 py-3 rounded-xl border border-white/10 text-gray-300 font-semibold hover:bg-white/5 transition-colors close-modal">
-                            Закрыть
-                        </button>
-                        <button class="flex-1 py-3 rounded-xl bg-gradient-to-r from-cyan-500 to-purple-500 text-white font-bold hover:opacity-90 transition-all go-to-offer">
-                            Перейти
-                        </button>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            
-            // Обработчики событий модального окна
-            modal.querySelector('.close-modal').addEventListener('click', () => {
-                modal.style.opacity = '0';
-                setTimeout(() => modal.remove(), 300);
-            });
-            
-            modal.querySelector('.go-to-offer').addEventListener('click', () => {
-                alert(`Перенаправление на страницу оффера ${offer.name}...\n\nВ реальном приложении здесь будет редирект на партнерскую ссылку.`);
-                modal.style.opacity = '0';
-                setTimeout(() => modal.remove(), 300);
-            });
-            
-            // Закрытие по клику на фон
-            modal.addEventListener('click', (e) => {
-                if (e.target === modal) {
-                    modal.style.opacity = '0';
-                    setTimeout(() => modal.remove(), 300);
-                }
-            });
+            // На мобильных и десктопе - прямой переход по партнерской ссылке
+            window.open(offer.partnerLink, '_blank');
         }
         
         // Поделиться результатами
