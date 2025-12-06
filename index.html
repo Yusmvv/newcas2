@@ -597,6 +597,90 @@
             to { transform: scale(1); opacity: 1; }
         }
         
+        /* НОВЫЕ СТИЛИ ДЛЯ ФИКСА ПЕРЕКРЫТИЯ И ПЕРЕНОСА */
+        .offer-card {
+            display: flex;
+            flex-direction: column;
+            height: auto;
+            min-height: 680px;
+            overflow: visible !important;
+        }
+        
+        .offer-card-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            overflow: visible !important;
+            position: relative;
+        }
+        
+        .bonus-description-container {
+            min-height: 100px;
+            max-height: 120px;
+            overflow-y: auto;
+            margin-bottom: 1rem;
+            padding-right: 4px;
+        }
+        
+        .bonus-description-container::-webkit-scrollbar {
+            width: 4px;
+        }
+        
+        .bonus-description-container::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 2px;
+        }
+        
+        .bonus-description-container::-webkit-scrollbar-thumb {
+            background: rgba(139, 92, 246, 0.5);
+            border-radius: 2px;
+        }
+        
+        .bonus-text-full {
+            white-space: normal;
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            line-height: 1.5;
+            font-size: 14px;
+            color: #E2E8F0;
+            padding: 0;
+            margin: 0;
+            display: block;
+            width: 100%;
+        }
+        
+        .text-no-overflow {
+            white-space: normal;
+            overflow: visible;
+            text-overflow: clip;
+            word-wrap: break-word;
+            word-break: break-word;
+            overflow-wrap: break-word;
+        }
+        
+        .fixed-height-row {
+            min-height: 36px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .tag-container {
+            min-height: 28px;
+            display: flex;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .truncate-text {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 100%;
+            display: block;
+        }
+        
         /* Оптимизация для мобильных */
         @media (max-width: 768px) {
             .ai-background::before {
@@ -660,6 +744,15 @@
             .scanning-stats {
                 gap: 20px;
             }
+            
+            .offer-card {
+                min-height: 720px;
+            }
+            
+            .bonus-description-container {
+                min-height: 110px;
+                max-height: 130px;
+            }
         }
         
         /* Улучшение тач-интерфейса */
@@ -686,6 +779,16 @@
         
         ::-webkit-scrollbar-thumb:hover {
             background: linear-gradient(180deg, var(--primary-dark), var(--secondary));
+        }
+        
+        /* Предотвращение перекрытия текста */
+        .prevent-overlap {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .grid-gap-fix {
+            margin-top: -1px;
         }
     </style>
 </head>
@@ -1127,7 +1230,7 @@
                 </div>
                 
                 <!-- Карточки офферов -->
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12" id="offers-container">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12 prevent-overlap" id="offers-container">
                     <!-- Карточки будут сгенерированы здесь -->
                 </div>
                 
@@ -1193,6 +1296,7 @@
                 id: 1,
                 name: "Beef Casino",
                 bonus: "200% + 100 фриспинов",
+                specificBonus: "Уникальный бонус: 77 фриспинов на слот Jammin' Jars без вейджера при регистрации по нашей ссылке.",
                 type: "deposit",
                 rating: 4.8,
                 popularity: "AI Топ-1",
@@ -1202,15 +1306,17 @@
                 icon: "fire",
                 minDeposit: "100₽",
                 withdrawalTime: "5-15 мин",
-                risk: "Низкий",
+                benefitLabel: "Фриспины",
+                benefitValue: "77 вращений",
+                benefitColor: "text-emerald-400",
                 aiScore: 9.7,
-                verification: "Есть",
                 partnerLink: "https://bttrc.ru/go/spbjptxpva"
             },
             {
                 id: 2,
                 name: "MelBet",
                 bonus: "130% + 30 фриспинов",
+                specificBonus: "Уникальный бонус: кэшбэк 15% по понедельникам + участие в турнире с призовым фондом 5 000 000₽ для новых игроков.",
                 type: "deposit",
                 rating: 4.9,
                 popularity: "AI Выбор",
@@ -1220,15 +1326,17 @@
                 icon: "trophy",
                 minDeposit: "100₽",
                 withdrawalTime: "10-20 мин",
-                risk: "Низкий",
+                benefitLabel: "Кэшбэк",
+                benefitValue: "15%",
+                benefitColor: "text-cyan-400",
                 aiScore: 9.5,
-                verification: "Есть",
                 partnerLink: "https://bttrc.ru/go/s3g8x82qqi"
             },
             {
                 id: 3,
                 name: "RT Casino",
                 bonus: "150% к депозиту",
+                specificBonus: "Уникальный бонус: 20 фриспинов за каждые 1000₽ депозита в течение первой недели + удвоенный кэшбэк в выходные.",
                 type: "deposit",
                 rating: 4.6,
                 popularity: "AI Рекомендует",
@@ -1238,15 +1346,17 @@
                 icon: "bolt",
                 minDeposit: "500₽",
                 withdrawalTime: "15-30 мин",
-                risk: "Низкий",
+                benefitLabel: "Активность",
+                benefitValue: "+20 фриспинов",
+                benefitColor: "text-purple-400",
                 aiScore: 9.2,
-                verification: "Есть",
                 partnerLink: "https://bttrc.ru/go/slxlrrhbfk"
             },
             {
                 id: 4,
                 name: "Jet Casino",
                 bonus: "100% + 50 фриспинов",
+                specificBonus: "Уникальный бонус: возвращаем 10% от проигрышей каждое воскресенье + бонусные вращения за каждое пополнение.",
                 type: "deposit",
                 rating: 4.7,
                 popularity: "AI Проверено",
@@ -1256,15 +1366,17 @@
                 icon: "rocket",
                 minDeposit: "200₽",
                 withdrawalTime: "5-10 мин",
-                risk: "Низкий",
+                benefitLabel: "Возврат",
+                benefitValue: "10%",
+                benefitColor: "text-yellow-400",
                 aiScore: 9.0,
-                verification: "Есть",
                 partnerLink: "https://bttrc.ru/go/s52s5n5qym"
             },
             {
                 id: 5,
                 name: "Flagman Casino",
                 bonus: "250% + 70 фриспинов",
+                specificBonus: "Уникальный бонус: 250% + 100 фриспинов на Book of Dead в день рождения + персональный менеджер для VIP-клиентов.",
                 type: "deposit",
                 rating: 4.5,
                 popularity: "AI Эксклюзив",
@@ -1274,15 +1386,17 @@
                 icon: "crown",
                 minDeposit: "300₽",
                 withdrawalTime: "10-25 мин",
-                risk: "Средний",
+                benefitLabel: "День рождения",
+                benefitValue: "Супер-бонус",
+                benefitColor: "text-blue-400",
                 aiScore: 8.8,
-                verification: "Есть",
                 partnerLink: "https://bttrc.ru/go/s8po2l4f8z"
             },
             {
                 id: 6,
                 name: "Lev Casino",
                 bonus: "120% к депозиту",
+                specificBonus: "Уникальный бонус: 50 фриспинов каждую неделю постоянным клиентам + специальные акции для держателей статуса Lev Premium.",
                 type: "deposit",
                 rating: 4.4,
                 popularity: "AI Найдено",
@@ -1292,15 +1406,17 @@
                 icon: "lion",
                 minDeposit: "100₽",
                 withdrawalTime: "15-40 мин",
-                risk: "Низкий",
+                benefitLabel: "Лояльность",
+                benefitValue: "Еженедельно",
+                benefitColor: "text-pink-400",
                 aiScore: 8.6,
-                verification: "Есть",
                 partnerLink: "https://bttrc.ru/go/se0v5pfjcq"
             },
             {
                 id: 7,
                 name: "7K Casino",
                 bonus: "100 фриспинов",
+                specificBonus: "Уникальный бонус: турнир выходного дня с джекпотами от Pragmatic Play + удвоенные выигрыши в пятницу вечером.",
                 type: "freespins",
                 rating: 4.3,
                 popularity: "AI Спецпредложение",
@@ -1310,9 +1426,10 @@
                 icon: "dice",
                 minDeposit: "0₽",
                 withdrawalTime: "30-60 мин",
-                risk: "Низкий",
+                benefitLabel: "Турниры",
+                benefitValue: "Выходные",
+                benefitColor: "text-orange-400",
                 aiScore: 8.4,
-                verification: "Есть",
                 partnerLink: "https://bttrc.ru/go/sxy9ja32wo"
             }
         ];
@@ -2050,21 +2167,22 @@
             // Генерация карточек реальных офферов
             offersData.forEach((offer, index) => {
                 const card = document.createElement('div');
-                card.className = 'glass-card glass-card-hover rounded-xl overflow-hidden fade-in';
+                card.className = 'glass-card glass-card-hover rounded-xl overflow-hidden fade-in offer-card flex flex-col prevent-overlap';
                 card.style.animationDelay = `${index * 0.1}s`;
                 
                 card.innerHTML = `
-                    <div class="p-6">
+                    <div class="p-6 flex flex-col flex-grow offer-card-content">
+                        <!-- Заголовок и рейтинг -->
                         <div class="flex justify-between items-start mb-6">
-                            <div>
+                            <div class="flex-grow">
                                 <div class="flex items-center mb-3">
-                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-r ${offer.color} flex items-center justify-center mr-4 relative overflow-hidden">
+                                    <div class="w-12 h-12 rounded-xl bg-gradient-to-r ${offer.color} flex items-center justify-center mr-4 relative overflow-hidden flex-shrink-0">
                                         <i class="fas fa-${offer.icon} text-white text-xl"></i>
                                         <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent ai-shimmer"></div>
                                     </div>
-                                    <div>
-                                        <h3 class="font-bold text-lg text-white mb-1">${offer.name}</h3>
-                                        <div class="flex items-center">
+                                    <div class="flex-grow min-w-0">
+                                        <h3 class="font-bold text-lg text-white mb-1 truncate-text">${offer.name}</h3>
+                                        <div class="flex items-center fixed-height-row">
                                             <div class="flex text-amber-400 text-xs">
                                                 ${getRatingStars(offer.rating)}
                                             </div>
@@ -2075,42 +2193,60 @@
                             </div>
                         </div>
                         
-                        <div class="mb-6">
-                            <div class="text-gray-400 text-sm mb-2">БОНУС:</div>
-                            <div class="text-xl font-bold text-white">${offer.bonus}</div>
+                        <!-- Основной бонус -->
+                        <div class="mb-4">
+                            <div class="text-gray-400 text-sm mb-2 fixed-height-row">БОНУС:</div>
+                            <div class="text-xl font-bold text-white mb-4 text-no-overflow">${offer.bonus}</div>
                         </div>
                         
+                        <!-- Уникальный конкретный бонус -->
+                        <div class="mb-6">
+                            <div class="text-gray-300 text-sm mb-2 font-medium fixed-height-row">Уникальный бонус:</div>
+                            <div class="bonus-description-container">
+                                <p class="bonus-text-full text-no-overflow">
+                                    ${offer.specificBonus}
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <!-- Статистика -->
                         <div class="grid grid-cols-3 gap-3 mb-6">
                             <div class="bg-white/5 rounded-lg p-3 text-center">
                                 <div class="text-gray-400 text-xs mb-1">Мин. депозит</div>
-                                <div class="font-bold text-white text-base">${offer.minDeposit}</div>
+                                <div class="font-bold text-white text-base truncate-text">${offer.minDeposit}</div>
                             </div>
                             <div class="bg-white/5 rounded-lg p-3 text-center">
                                 <div class="text-gray-400 text-xs mb-1">Вывод</div>
-                                <div class="font-bold text-white text-base">${offer.withdrawalTime}</div>
+                                <div class="font-bold text-white text-base truncate-text">${offer.withdrawalTime}</div>
                             </div>
                             <div class="bg-white/5 rounded-lg p-3 text-center">
-                                <div class="text-gray-400 text-xs mb-1">Верификация</div>
-                                <div class="font-bold text-green-400 text-base">${offer.verification}</div>
+                                <div class="text-gray-400 text-xs mb-1 truncate-text">${offer.benefitLabel}</div>
+                                <div class="font-bold ${offer.benefitColor} text-base truncate-text">${offer.benefitValue}</div>
                             </div>
                         </div>
                         
-                        <div class="flex flex-wrap gap-2 mb-6">
-                            <span class="px-3 py-1 bg-gradient-to-r ${offer.color} rounded text-xs font-semibold text-white">
-                                ${offer.tag}
-                            </span>
-                            <span class="px-3 py-1 bg-cyan-900/30 text-cyan-400 rounded text-xs font-semibold">
-                                <i class="fas fa-robot mr-1"></i>${offer.popularity}
-                            </span>
-                            <span class="px-3 py-1 bg-emerald-900/30 text-emerald-400 rounded text-xs font-semibold">
-                                AI Score: ${offer.aiScore}/10
-                            </span>
+                        <!-- Теги -->
+                        <div class="mb-6">
+                            <div class="tag-container">
+                                <span class="px-3 py-1 bg-gradient-to-r ${offer.color} rounded text-xs font-semibold text-white truncate-text">
+                                    ${offer.tag}
+                                </span>
+                                <span class="px-3 py-1 bg-cyan-900/30 text-cyan-400 rounded text-xs font-semibold truncate-text">
+                                    <i class="fas fa-robot mr-1"></i>${offer.popularity}
+                                </span>
+                                <span class="px-3 py-1 bg-emerald-900/30 text-emerald-400 rounded text-xs font-semibold truncate-text">
+                                    AI Score: ${offer.aiScore}/10
+                                </span>
+                            </div>
                         </div>
                         
-                        <button class="w-full py-4 rounded-xl bg-gradient-to-r ${offer.color} text-white font-semibold text-base clickable offer-cta relative overflow-hidden" data-offer-id="${offer.id}">
-                            <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent ai-shimmer"></div>
-                            <i class="fas fa-bolt mr-2"></i>Забрать AI-оффер
-                        </button>
+                        <!-- Кнопка, прижатая к низу -->
+                        <div class="mt-auto pt-4">
+                            <button class="w-full py-4 rounded-xl bg-gradient-to-r ${offer.color} text-white font-semibold text-base clickable offer-cta relative overflow-hidden" data-offer-id="${offer.id}">
+                                <div class="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent ai-shimmer"></div>
+                                <i class="fas fa-bolt mr-2"></i>Забрать AI-оффер
+                            </button>
+                        </div>
                     </div>
                 `;
                 
